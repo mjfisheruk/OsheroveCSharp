@@ -22,5 +22,11 @@ namespace OsheroveCalculatorTest
         {
             Assert.AreEqual(5, Calculator.Add("2,3"));
         }
+
+        [Test]
+        public void ReturnsSumOfManyCommaDelimitedNumbers()
+        {
+            Assert.AreEqual(17, Calculator.Add("2,3,12"));
+        }
     }
 }
