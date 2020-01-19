@@ -28,6 +28,11 @@
                     continue;
                 }
 
+                if (parsedInt > 1000)
+                {
+                    continue;
+                }
+
                 if (parsedInt < 0)
                 {
                     invalidNumbers.Add(parsedInt);

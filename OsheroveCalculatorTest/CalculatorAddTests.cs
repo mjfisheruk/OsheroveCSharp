@@ -55,5 +55,17 @@ namespace OsheroveCalculatorTest
             StringAssert.Contains("-2", exception.Message);
             StringAssert.Contains("-12", exception.Message);
         }
+
+        [Test]
+        public void NumbersGreaterThan1000AreIgnored()
+        {
+            Assert.AreEqual(2, Calculator.Add("1001,2"));
+        }
+
+        [Test]
+        public void NumbersEqualTo1000AreIncluded()
+        {
+            Assert.AreEqual(1002, Calculator.Add("1000,2"));
+        }
     }
 }
