@@ -67,5 +67,11 @@ namespace OsheroveCalculatorTest
         {
             Assert.AreEqual(1002, Calculator.Add("1000,2"));
         }
+
+        [Test]
+        public void AllowsArbitraryLengthCustomDelimiters()
+        {
+            Assert.AreEqual(6, Calculator.Add("//[***]\n1***2***3"));
+        }
     }
 }

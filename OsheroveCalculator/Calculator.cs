@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     public static class Calculator
     {
@@ -60,8 +61,18 @@
             }
 
             var firstLine = numbersString.Split("\n")[0];
-            var delimiter = firstLine.Substring(2);
-            return delimiter;
+
+            var matches = Regex.Matches(firstLine, "\\[(.+?)\\]");
+            foreach (Match match in matches)
+            {
+                var groups = match.Groups;
+                return groups[1].Value;
+            }
+
+            // We don't have any square bracket syntax, so all
+            // of the string apart from the leading // is our
+            // delimiter:
+            return firstLine.Substring(2);
         }
 
         private static string NormalizeString(string numbersString, string delimiter)
