@@ -34,5 +34,11 @@ namespace OsheroveCalculatorTest
         {
             Assert.AreEqual(6, Calculator.Add("1\n2,3"));
         }
+
+        [Test]
+        public void AllowsConfigurableDelimiter()
+        {
+            Assert.AreEqual(3, Calculator.Add("//;\n1;2"));
+        }
     }
 }

@@ -2,10 +2,13 @@
 {
     public static class Calculator
     {
+        private const string DefaultDelimiter = ",";
+
         public static int Add(string numbersString)
         {
-            var normalizedString = NormalizeString(numbersString);
-            var parts = normalizedString.Split(",");
+            var delimiter = ExtractDelimiter(numbersString);
+            var normalizedString = NormalizeString(numbersString, delimiter);
+            var parts = normalizedString.Split(DefaultDelimiter);
             var result = 0;
             foreach (var part in parts)
             {
@@ -18,9 +21,22 @@
             return result;
         }
 
-        private static string NormalizeString(string numbersString)
+        private static string ExtractDelimiter(string numbersString)
         {
-            return numbersString.Replace("\n", ",");
+            if (!numbersString.StartsWith("//"))
+            {
+                return DefaultDelimiter;
+            }
+
+            var firstLine = numbersString.Split("\n")[0];
+            var delimiter = firstLine.Substring(2);
+            return delimiter;
+        }
+
+        private static string NormalizeString(string numbersString, string delimiter)
+        {
+            var noNewLines = numbersString.Replace("\n", DefaultDelimiter);
+            return noNewLines.Replace(delimiter, DefaultDelimiter);
         }
     }
 }
