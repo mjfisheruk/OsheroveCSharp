@@ -11,8 +11,8 @@
 
         public static int Add(string numbersString)
         {
-            var delimiter = ExtractDelimiter(numbersString);
-            var normalizedString = NormalizeString(numbersString, delimiter);
+            var delimiters = ExtractDelimiters(numbersString);
+            var normalizedString = NormalizeString(numbersString, delimiters);
             var numbers = ExtractNumbers(normalizedString);
             return numbers.Sum();
         }
@@ -53,32 +53,37 @@
             return validNumbers.ToArray();
         }
 
-        private static string ExtractDelimiter(string numbersString)
+        private static string[] ExtractDelimiters(string numbersString)
         {
             if (!numbersString.StartsWith("//"))
             {
-                return DefaultDelimiter;
+                return new[] { DefaultDelimiter };
             }
 
             var firstLine = numbersString.Split("\n")[0];
 
             var matches = Regex.Matches(firstLine, "\\[(.+?)\\]");
-            foreach (Match match in matches)
+            var delimiters = matches.Select((match) => match.Groups[1].Value).ToArray();
+            if (delimiters.Any())
             {
-                var groups = match.Groups;
-                return groups[1].Value;
+                return delimiters;
             }
 
             // We don't have any square bracket syntax, so all
             // of the string apart from the leading // is our
             // delimiter:
-            return firstLine.Substring(2);
+            return new[] { firstLine.Substring(2) };
         }
 
-        private static string NormalizeString(string numbersString, string delimiter)
+        private static string NormalizeString(string numbersString, string[] delimiters)
         {
-            var noNewLines = numbersString.Replace("\n", DefaultDelimiter);
-            return noNewLines.Replace(delimiter, DefaultDelimiter);
+            var allDelimiters = delimiters.Concat(new[] { "\n" });
+            foreach (var delimiter in allDelimiters)
+            {
+                numbersString = numbersString.Replace(delimiter, DefaultDelimiter);
+            }
+
+            return numbersString;
         }
     }
 }

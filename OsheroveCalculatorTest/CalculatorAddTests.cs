@@ -73,5 +73,11 @@ namespace OsheroveCalculatorTest
         {
             Assert.AreEqual(6, Calculator.Add("//[***]\n1***2***3"));
         }
+
+        [Test]
+        public void AllowsMultipleCustomDelimiters()
+        {
+            Assert.AreEqual(6, Calculator.Add("//[*][%]\n1*2%3"));
+        }
     }
 }
