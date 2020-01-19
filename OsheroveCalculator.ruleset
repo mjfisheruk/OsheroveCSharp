@@ -1,0 +1,16 @@
+<RuleSet Name="Style ruleset for OsheroveCalculator solution" Description="Style ruleset for OsheroveCalculator solution" ToolsVersion="10.0">
+    <Localization ResourceAssembly="Microsoft.VisualStudio.CodeAnalysis.RuleSets.Strings.dll" ResourceBaseName="Microsoft.VisualStudio.CodeAnalysis.RuleSets.Strings.Localized">
+        <Name Resource="OsheroveCalculator_Name" />
+        <Description Resource="OsheroveCalculator_Description" />
+    </Localization>
+    <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.CSharp.DocumentationRules">
+        <!-- XML Documentation Warnings -->
+        <Rule Id="SA1615" Action="Hidden" />
+        <Rule Id="SA1600" Action="Hidden" />
+        <Rule Id="SA1633" Action="Hidden" />
+        <Rule Id="SA0001" Action="Hidden" />
+        <Rule Id="CS1573" Action="Hidden" />
+        <Rule Id="CS1591" Action="Hidden" />
+        <Rule Id="CS1712" Action="Hidden" />
+    </Rules>
+</RuleSet>
