@@ -28,5 +28,11 @@ namespace OsheroveCalculatorTest
         {
             Assert.AreEqual(17, Calculator.Add("2,3,12"));
         }
+
+        [Test]
+        public void ReturnsSumOfNewLineAndCommaDelimitedNumbers()
+        {
+            Assert.AreEqual(6, Calculator.Add("1\n2,3"));
+        }
     }
 }

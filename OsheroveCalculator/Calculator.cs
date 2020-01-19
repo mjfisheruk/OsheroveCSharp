@@ -4,7 +4,8 @@
     {
         public static int Add(string numbersString)
         {
-            var parts = numbersString.Split(",");
+            var normalizedString = NormalizeString(numbersString);
+            var parts = normalizedString.Split(",");
             var result = 0;
             foreach (var part in parts)
             {
@@ -15,6 +16,11 @@
             }
 
             return result;
+        }
+
+        private static string NormalizeString(string numbersString)
+        {
+            return numbersString.Replace("\n", ",");
         }
     }
 }
