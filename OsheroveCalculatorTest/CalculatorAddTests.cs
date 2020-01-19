@@ -1,5 +1,6 @@
 namespace OsheroveCalculatorTest
 {
+    using System;
     using NUnit.Framework;
     using OsheroveCalculator;
 
@@ -39,6 +40,20 @@ namespace OsheroveCalculatorTest
         public void AllowsConfigurableDelimiter()
         {
             Assert.AreEqual(3, Calculator.Add("//;\n1;2"));
+        }
+
+        [Test]
+        public void ThrowsExceptionWithNegativeNumber()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Calculator.Add("1,-2,4"));
+        }
+
+        [Test]
+        public void NegativeNumbersReturnedInExceptionMessage()
+        {
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Calculator.Add("-12,1,-2,4"));
+            StringAssert.Contains("-2", exception.Message);
+            StringAssert.Contains("-12", exception.Message);
         }
     }
 }

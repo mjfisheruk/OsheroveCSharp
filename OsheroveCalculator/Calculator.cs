@@ -1,5 +1,9 @@
 ﻿namespace OsheroveCalculator
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public static class Calculator
     {
         private const string DefaultDelimiter = ",";
@@ -8,17 +12,39 @@
         {
             var delimiter = ExtractDelimiter(numbersString);
             var normalizedString = NormalizeString(numbersString, delimiter);
+            var numbers = ExtractNumbers(normalizedString);
+            return numbers.Sum();
+        }
+
+        private static int[] ExtractNumbers(string normalizedString)
+        {
             var parts = normalizedString.Split(DefaultDelimiter);
-            var result = 0;
+            var invalidNumbers = new List<int>();
+            var validNumbers = new List<int>();
             foreach (var part in parts)
             {
-                if (int.TryParse(part, out var parsedInt))
+                if (!int.TryParse(part, out var parsedInt))
                 {
-                    result += parsedInt;
+                    continue;
+                }
+
+                if (parsedInt < 0)
+                {
+                    invalidNumbers.Add(parsedInt);
+                }
+                else
+                {
+                    validNumbers.Add(parsedInt);
                 }
             }
 
-            return result;
+            if (invalidNumbers.Count != 0)
+            {
+                var message = "Negative numbers present:" + string.Join(", ", invalidNumbers);
+                throw new ArgumentOutOfRangeException(nameof(normalizedString), message);
+            }
+
+            return validNumbers.ToArray();
         }
 
         private static string ExtractDelimiter(string numbersString)
