@@ -17,7 +17,40 @@
             return numbers.Sum();
         }
 
-        private static int[] ExtractNumbers(string normalizedString)
+        private static string[] ExtractDelimiters(string numbersString)
+        {
+            if (!numbersString.StartsWith("//"))
+            {
+                return new[] { DefaultDelimiter };
+            }
+
+            var firstLine = numbersString.Split("\n")[0];
+
+            var matches = Regex.Matches(firstLine, "\\[(.+?)\\]");
+            var delimiters = (from match in matches select match.Groups[1].Value).ToArray();
+            if (delimiters.Any())
+            {
+                return delimiters;
+            }
+
+            // We don't have any square bracket syntax, so all
+            // of the string apart from the leading // is our
+            // delimiter:
+            return new[] { firstLine.Substring(2) };
+        }
+
+        private static string NormalizeString(string numbersString, IEnumerable<string> delimiters)
+        {
+            var allDelimiters = delimiters.Concat(new[] { "\n" });
+            foreach (var delimiter in allDelimiters)
+            {
+                numbersString = numbersString.Replace(delimiter, DefaultDelimiter);
+            }
+
+            return numbersString;
+        }
+
+        private static IList<int> ExtractNumbers(string normalizedString)
         {
             var parts = normalizedString.Split(DefaultDelimiter);
             var invalidNumbers = new List<int>();
@@ -50,40 +83,7 @@
                 throw new ArgumentOutOfRangeException(nameof(normalizedString), message);
             }
 
-            return validNumbers.ToArray();
-        }
-
-        private static string[] ExtractDelimiters(string numbersString)
-        {
-            if (!numbersString.StartsWith("//"))
-            {
-                return new[] { DefaultDelimiter };
-            }
-
-            var firstLine = numbersString.Split("\n")[0];
-
-            var matches = Regex.Matches(firstLine, "\\[(.+?)\\]");
-            var delimiters = matches.Select((match) => match.Groups[1].Value).ToArray();
-            if (delimiters.Any())
-            {
-                return delimiters;
-            }
-
-            // We don't have any square bracket syntax, so all
-            // of the string apart from the leading // is our
-            // delimiter:
-            return new[] { firstLine.Substring(2) };
-        }
-
-        private static string NormalizeString(string numbersString, string[] delimiters)
-        {
-            var allDelimiters = delimiters.Concat(new[] { "\n" });
-            foreach (var delimiter in allDelimiters)
-            {
-                numbersString = numbersString.Replace(delimiter, DefaultDelimiter);
-            }
-
-            return numbersString;
+            return validNumbers;
         }
     }
 }
